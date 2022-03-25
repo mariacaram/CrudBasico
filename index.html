@@ -1,94 +1,105 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <title>Crud Productos</title>
-</head>
-
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- agregar las etiquetas meta -->
+<link rel="stylesheet" href="style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<title>Crud Productos</title>
+  </head>
+  <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div class="container">
-            <a class="navbar-brand" href="index.html">CRUD</a>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="index.html"
-                    >Inicio</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Admin</a>
-                </li>
-              </ul>
-            </div>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">CRUD</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="index.html"
+                  >Inicio</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Admin</a>
+              </li>
+            </ul>
           </div>
-        </nav>
-      </header>
+        </div>
+      </nav>
+    </header>
     <main class="container my-5">
-        <section>
-            <h1 class="display-3 text-center">Administrador productos</h1>
-            <hr />
-            <article class="bg-light p-3 my-5">
-                <h3>Cargar productos</h3>
-                <hr />
-                <form>
-                    <div class="mb-3">
-                        <label for="" class="form-label">Codigo</label>
-                        <input id='codigo' type="text" class="form-control" placeholder="Ingresar un código" onblur="validarCampoRequerido(this)"/>
-                    </div>
-                    <div class="valid-feedback"> Este campo es correcto </div>
-                    <div class="invalid-feedback">Este campo es incorrecto </div>
-                    <div class="mb-3">
-                        <label for="" class="form-label">Producto</label>
-                        <input id="producto" type="text" class="form-control" placeholder="mouse logitech" required minlength="3" maxlength="35" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="" class="form-label">descripcion</label>
-                        <input type="text" class="form-control" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="" class="form-label">cantidad</label>
-                        <input type="number" class="form-control" id="cantidad" placeholder="Ej:5" />
-                        <div class="invalid-feedback">Este campo es obligatorio y la cantidad de caracteres debe ser entre 2 a 5</div>
-                        <div class="valid-feedback">Este campo es correcto</div>
-
-                    </div>
+      <section>
+        <h1 class="display-3 text-center">Administrador productos</h1>
+        <hr />
+        <article class="bg-light p-3 my-5">
+          <h3>Cargar productos</h3>
+          <hr />
+          <form id='formProducto'>
+            <div class="mb-3">
+              <label for="" class="form-label">Codigo</label>
+              <input
+                id="codigo"
+                type="text"
+                class="form-control"
+                placeholder="Ingresar un codigo"
                 
-                    <div class="mb-3">
-                        <label for="" class="form-label">URL</label>
-                        <input type="text" class="form-control" />
-                    </div>
-                    <button class="btn btn-primary" type="submit">Guardar</button>
-                </form>
-            </article>
-
-        </section>
+                />
+                <!-- onblur="validarCampoRequerido(this)" -->
+              <div class="valid-feedback">Este campo es correcto</div>
+              <div class="invalid-feedback">Este campo es obligatorio</div>
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">Producto</label>
+              <input
+                id="producto"
+                type="text"
+                class="form-control"
+                placeholder="mouse logitec"
+            
+              />
+              <div class="invalid-feedback">Este campo es obligatorio</div>
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">descripcion</label>
+              <textarea  id="descripcion" class="form-control" ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">cantidad</label>
+              <input
+                type="text"
+                class="form-control"
+                id="cantidad"
+                placeholder="ej: 5"
+              />
+              <div class="invalid-feedback">Este campo es obligatorio y la cantidad de caracteres debe ser entre 1 a 5</div>
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">URL</label>
+              <input type="text" class="form-control" id='url' />
+            </div>
+            <button class="btn btn-primary" type="submit">Guardar</button>
+            <div class="alert alert-danger mt-4 d-none" role="alert" id='msjAlerta'>
+             Debe completar todos los datos marcados
+            </div>
+          </form>
+        </article>
+      </section>
     </main>
     <footer></footer>
-
-
-
-
-    <script src="js/validaciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
-
+    <script src="js/validaciones.js"></script>
+  </body>
 </html>
