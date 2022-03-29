@@ -16,7 +16,9 @@ let descripcion = document.querySelector("#descripcion");
 let url = document.querySelector("#url");
 let formulario = document.querySelector("#formProducto");
 let listaProductos = [];
+let productoExistente = false //Si es false, significa que no existe el producto entonces tengo que agregar uno nuevo. Pero si es true, tengo que modificar. 
 // agregar eventos desde javascript
+let btnAgregar = document.querySelector("#btnAgregar")
 producto.addEventListener("blur", () => {
   validarCampoRequerido(producto);
 });
@@ -33,19 +35,24 @@ url.addEventListener("blur", () => {
   validarURL(url);
 });
 formulario.addEventListener("submit", guardarProducto);
+btnAgregar.addEventListener("click", limpiarFormulario);
 
 // Verifico si hay datos en el local Storage
 cargaInicial();
 
 function guardarProducto(e) {
   e.preventDefault();
+  //funcion para validar datos del formulario
   if (validarGeneral()) {
-    agregarProducto();
-    console.log("aqui debería crear un prodcuto");
-  } else {
-    console.log("aqui debería mostrar un error");
-  }
-}
+    //verifico si existe el objeto
+    if (productoExistente)
+         { // modificar
+          actualizarProducto()} 
+           else
+           //agregar
+              {agregarProducto()}}
+  else {console.log("aqui debería mostrar un error");}
+              }
 
 function agregarProducto() {
   let productoNuevo = new Producto(
@@ -79,17 +86,19 @@ function cargaInicial() {
 
 function crearFila(itemProducto) {
   let tabla = document.querySelector("#tablaProductos");
-  console.log(tabla);
+  // console.log(tabla);
   tabla.innerHTML += `  <tr>
-<th scope="row">${itemProducto.codigo}</th>
+  <th scope="row">${itemProducto.codigo}</th>
+  <td>${itemProducto.nombreProducto}</td>
 <td>${itemProducto.descripcion}</td>
-<td>${itemProducto.cantidad}</td>
 <td>${itemProducto.cantidad}</td>
 <td>${itemProducto.url}</td>
 <td>
-    <button class="btn btn-warning" >Editar</button>
+    <button class="btn btn-warning" onclick="prepararEdicionProducto(
+    ${itemProducto.codigo})">Editar</button>
     <button class="btn btn-danger" >Borrar</button>
 </td>
+</tr>
 `;
 }
 
@@ -101,4 +110,46 @@ function limpiarFormulario() {
   descripcion.className = "form-control";
   cantidad.className = "form-control";
   url.className = "form-control";
+
+  productoExistente = false
 }
+
+window.prepararEdicionProducto = (codigo) => {
+  let productoEncontrado = listaProductos.find ((itemProducto) =>  {return itemProducto.codigo == codigo});
+  console.log (productoEncontrado)
+  document.querySelector("#codigo").value = productoEncontrado.codigo;
+  document.querySelector("#producto").value = productoEncontrado.nombreProducto;
+  document.querySelector("#descripcion").value = productoEncontrado.descripcion;
+  document.querySelector("#cantidad").value = productoEncontrado.cantidad;
+  document.querySelector("#url").value = productoEncontrado.url;
+
+  productoExistente = true;
+
+
+
+} 
+
+function actualizarProducto () 
+{
+
+  let indiceProducto = listaProductos.findIndex ( (itemProducto)=> {return itemProducto.codigo == codigo.value}  )
+
+listaProductos[indiceProducto].nombreProducto = producto.value 
+listaProductos[indiceProducto].descripcion = descripcion.value 
+listaProductos[indiceProducto].cantidad = cantidad.value 
+listaProductos[indiceProducto].url = url.value 
+console.log(listaProductos[indiceProducto])
+borrarFilas ()
+listaProductos.forEach ((itemProducto)=>{crearFila (itemProducto)})
+localStorage.setItem("listaProductosKey", JSON.stringify(listaProductos));
+
+ }
+
+
+function borrarFilas (){
+  let tabla = document.querySelector("#tablaProductos")
+tabla.innerHTML = "";
+
+}
+
+
