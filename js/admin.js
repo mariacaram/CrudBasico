@@ -74,6 +74,13 @@ function agregarProducto() {
 
   crearFila(productoNuevo);
   limpiarFormulario();
+
+  //mostrar mensaje al ursuario
+  Swal.fire(
+    'Producto Agregado',
+    'El producto fue correctamente agregado',
+    'success'
+  )
 }
 // Si hay algo en el local lo guardo en el arreglo, sino, dejo el array vacio
 function cargaInicial() {
@@ -96,7 +103,7 @@ function crearFila(itemProducto) {
 <td>
     <button class="btn btn-warning" onclick="prepararEdicionProducto(
     ${itemProducto.codigo})">Editar</button>
-    <button class="btn btn-danger" >Borrar</button>
+    <button class="btn btn-danger" onclick="eliminarProducto(${itemProducto.codigo})" >Borrar</button>
 </td>
 </tr>
 `;
@@ -129,27 +136,92 @@ window.prepararEdicionProducto = (codigo) => {
 
 } 
 
-function actualizarProducto () 
-{
+window.eliminarProducto = (codigo) =>{ console.log (codigo)
+  Swal.fire({
+    title: 'Estas seguro de borrar el producto?',
+    text: "No se puede revertir este proceso posteriormente",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, borrar!',
+    cancelButtonText: 'Cancelar!'
+  }).then((result) => {
+    if (result.isConfirmed) {
 
-  let indiceProducto = listaProductos.findIndex ( (itemProducto)=> {return itemProducto.codigo == codigo.value}  )
+      let _listaProductos = listaProductos.filter((itemProducto) =>{return itemProducto.codigo != codigo})
+      listaProductos = _listaProductos;
+      localStorage.setItem ('listaProductosKey', JSON.stringify(listaProductos))
 
-listaProductos[indiceProducto].nombreProducto = producto.value 
-listaProductos[indiceProducto].descripcion = descripcion.value 
-listaProductos[indiceProducto].cantidad = cantidad.value 
-listaProductos[indiceProducto].url = url.value 
-console.log(listaProductos[indiceProducto])
-borrarFilas ()
-listaProductos.forEach ((itemProducto)=>{crearFila (itemProducto)})
-localStorage.setItem("listaProductosKey", JSON.stringify(listaProductos));
+      //Borro tabla
 
- }
+      borrarFilas();
 
+      //Vuelvo a dibujar tabla:
 
-function borrarFilas (){
-  let tabla = document.querySelector("#tablaProductos")
-tabla.innerHTML = "";
+      listaProductos.forEach((itemProducto)=>crearFila(itemProducto))
 
+      console.log(_listaProductos)
+
+      Swal.fire(
+        'Producto eliminado!',
+        'El producto fue correctamente eliminado',
+        'success'
+      )
+    }
+  })
 }
 
+function actualizarProducto() {
+  // console.log("aqui tengo que modificar los productos");
+  // console.log(codigo.value);
+  Swal.fire({
+    title: "¿Esta seguro que desea editar el producto?",
+    text: "No puede revertir posteriormente este proceso",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "si",
+    cancelButtonText: "cancelar",
+  }).then((result) => {
+    // console.log(result);
+    if (result.isConfirmed) {
+      //aqui es donde procedemos a editar
+      //buscar la posicion del objeto con el codigo indicado
+      let indiceProducto = listaProductos.findIndex((itemProducto) => {
+        return itemProducto.codigo == codigo.value;
+      });
+
+      // actualizar los valores del objeto encontrado dentro de mi arreglo
+      listaProductos[indiceProducto].nombreProducto =
+        document.querySelector("#producto").value;
+      listaProductos[indiceProducto].descripcion =
+        document.querySelector("#descripcion").value;
+      listaProductos[indiceProducto].cantidad =
+        document.querySelector("#cantidad").value;
+      listaProductos[indiceProducto].url = document.querySelector("#url").value;
+
+      console.log(listaProductos[indiceProducto]);
+      // actualizar el localstorage
+      localStorage.setItem("listaProductosKey", JSON.stringify(listaProductos));
+      // actualizar la tabla
+      borrarFilas();
+      listaProductos.forEach((itemProducto) => {
+        crearFila(itemProducto);
+      });
+      //limpiar el formulario
+      limpiarFormulario();
+
+      // mostrar un mensaje que el producto fue editado
+      Swal.fire("Producto editado", "Su producto fue correctamente editado", "success");
+    }
+  });
+}
+
+function borrarFilas() {
+  // traigo el nodo padre que seria el tbody
+  let tabla = document.querySelector("#tablaProductos");
+  tabla.innerHTML = "";
+}
 
