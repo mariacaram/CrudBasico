@@ -16,9 +16,11 @@ let descripcion = document.querySelector("#descripcion");
 let url = document.querySelector("#url");
 let formulario = document.querySelector("#formProducto");
 let listaProductos = [];
-let productoExistente = false //Si es false, significa que no existe el producto entonces tengo que agregar uno nuevo. Pero si es true, tengo que modificar. 
+let productoExistente = false; //Si es false, significa que no existe el producto entonces tengo que agregar uno nuevo. Pero si es true, tengo que modificar.
 // agregar eventos desde javascript
-let btnAgregar = document.querySelector("#btnAgregar")
+let btnAgregar = document.querySelector("#btnAgregar");
+let btnDatosPrueba = document.querySelector("#btnDatosPrueba");
+console.log(btnDatosPrueba);
 producto.addEventListener("blur", () => {
   validarCampoRequerido(producto);
 });
@@ -36,6 +38,7 @@ url.addEventListener("blur", () => {
 });
 formulario.addEventListener("submit", guardarProducto);
 btnAgregar.addEventListener("click", limpiarFormulario);
+btnDatosPrueba.addEventListener("click", cargarDatosPrueba);
 
 // Verifico si hay datos en el local Storage
 cargaInicial();
@@ -45,14 +48,18 @@ function guardarProducto(e) {
   //funcion para validar datos del formulario
   if (validarGeneral()) {
     //verifico si existe el objeto
-    if (productoExistente)
-         { // modificar
-          actualizarProducto()} 
-           else
-           //agregar
-              {agregarProducto()}}
-  else {console.log("aqui debería mostrar un error");}
-              }
+    if (productoExistente) {
+      // modificar
+      actualizarProducto();
+    }
+    //agregar
+    else {
+      agregarProducto();
+    }
+  } else {
+    console.log("aqui debería mostrar un error");
+  }
+}
 
 function agregarProducto() {
   let productoNuevo = new Producto(
@@ -77,10 +84,10 @@ function agregarProducto() {
 
   //mostrar mensaje al ursuario
   Swal.fire(
-    'Producto Agregado',
-    'El producto fue correctamente agregado',
-    'success'
-  )
+    "Producto Agregado",
+    "El producto fue correctamente agregado",
+    "success"
+  );
 }
 // Si hay algo en el local lo guardo en el arreglo, sino, dejo el array vacio
 function cargaInicial() {
@@ -118,12 +125,14 @@ function limpiarFormulario() {
   cantidad.className = "form-control";
   url.className = "form-control";
 
-  productoExistente = false
+  productoExistente = false;
 }
 
 window.prepararEdicionProducto = (codigo) => {
-  let productoEncontrado = listaProductos.find ((itemProducto) =>  {return itemProducto.codigo == codigo});
-  console.log (productoEncontrado)
+  let productoEncontrado = listaProductos.find((itemProducto) => {
+    return itemProducto.codigo == codigo;
+  });
+  console.log(productoEncontrado);
   document.querySelector("#codigo").value = productoEncontrado.codigo;
   document.querySelector("#producto").value = productoEncontrado.nombreProducto;
   document.querySelector("#descripcion").value = productoEncontrado.descripcion;
@@ -131,27 +140,26 @@ window.prepararEdicionProducto = (codigo) => {
   document.querySelector("#url").value = productoEncontrado.url;
 
   productoExistente = true;
+};
 
-
-
-} 
-
-window.eliminarProducto = (codigo) =>{ console.log (codigo)
+window.eliminarProducto = (codigo) => {
+  console.log(codigo);
   Swal.fire({
-    title: 'Estas seguro de borrar el producto?',
+    title: "Estas seguro de borrar el producto?",
     text: "No se puede revertir este proceso posteriormente",
-    icon: 'warning',
+    icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, borrar!',
-    cancelButtonText: 'Cancelar!'
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, borrar!",
+    cancelButtonText: "Cancelar!",
   }).then((result) => {
     if (result.isConfirmed) {
-
-      let _listaProductos = listaProductos.filter((itemProducto) =>{return itemProducto.codigo != codigo})
+      let _listaProductos = listaProductos.filter((itemProducto) => {
+        return itemProducto.codigo != codigo;
+      });
       listaProductos = _listaProductos;
-      localStorage.setItem ('listaProductosKey', JSON.stringify(listaProductos))
+      localStorage.setItem("listaProductosKey", JSON.stringify(listaProductos));
 
       //Borro tabla
 
@@ -159,18 +167,18 @@ window.eliminarProducto = (codigo) =>{ console.log (codigo)
 
       //Vuelvo a dibujar tabla:
 
-      listaProductos.forEach((itemProducto)=>crearFila(itemProducto))
+      listaProductos.forEach((itemProducto) => crearFila(itemProducto));
 
-      console.log(_listaProductos)
+      console.log(_listaProductos);
 
       Swal.fire(
-        'Producto eliminado!',
-        'El producto fue correctamente eliminado',
-        'success'
-      )
+        "Producto eliminado!",
+        "El producto fue correctamente eliminado",
+        "success"
+      );
     }
-  })
-}
+  });
+};
 
 function actualizarProducto() {
   // console.log("aqui tengo que modificar los productos");
@@ -214,7 +222,11 @@ function actualizarProducto() {
       limpiarFormulario();
 
       // mostrar un mensaje que el producto fue editado
-      Swal.fire("Producto editado", "Su producto fue correctamente editado", "success");
+      Swal.fire(
+        "Producto editado",
+        "Su producto fue correctamente editado",
+        "success"
+      );
     }
   });
 }
@@ -225,3 +237,33 @@ function borrarFilas() {
   tabla.innerHTML = "";
 }
 
+function cargarDatosPrueba() {
+  let datos = [
+    {
+      codigo: "123",
+      nombreProducto: "planta 1",
+      cantidad: "2",
+      descripcion: "Esto es una planta",
+      url: "https://images.pexels.com/photos/9458756/pexels-photo-9458756.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    },
+
+    {
+      codigo: "123",
+      nombreProducto: "planta 1",
+      cantidad: "2",
+      descripcion: "Esto es una planta",
+      url: "https://images.pexels.com/photos/9458756/pexels-photo-9458756.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    },
+  ];
+
+  if (!localStorage.getItem("listaProductosKey")) {
+    localStorage.setItem("listaProductosKey", JSON.stringify(datos));
+    console.log("Aqui cargo datos de prueba");
+    listaProductos = datos;
+    listaProductos.forEach((itemProducto) => {
+      crearFila(itemProducto);
+    });
+  } else {
+    console.log("Aqui no hago nada ya que hay datos cargados");
+  }
+}
